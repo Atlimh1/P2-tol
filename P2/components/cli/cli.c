@@ -30,5 +30,13 @@ void id_command(char*)
 
 void date_command(char*)
 {
-	// ...?
+	lownet_get_time current_time = lownet_get_time();
+	if (current_time.seconds == 0) {
+		serial_write_line("Network time is not available.");
+		return;
+	}
+	char buffer[TIME_WIDTH + 20];
+    format_time(buffer, &current_time);
+    strcat(buffer, " sec since the course started.");
+    serial_write_line(buffer);
 }
